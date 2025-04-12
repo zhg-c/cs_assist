@@ -7,8 +7,10 @@ using namespace std;
 int main()
 {
     vector<DWORD_PTR> vRes;
-    assistTools atools(TEXT("zhg_test.exe"));
+    assistTools atools(TEXT("PlantsVsZombies.exe"));
+
     int val = 0;
+    cout << "input: \n";
     cin >> val;
     vRes = atools.scanMemory(val);
     
@@ -19,6 +21,7 @@ int main()
     }
     cout << "*******************\n";
     while (vRes.size() > 1) {
+        cout << "input: \n";
         cin >> val;
         vRes = atools.scanMemory(vRes, val);
         cout << index++ << ":\n";
@@ -27,6 +30,10 @@ int main()
         }
         cout << "*******************\n";
     }
-    
+    if (vRes.size()) {
+        cout << "input: \n";
+        cin >> val;
+        atools.writeMemory(vRes, val);
+    }
     return 0;
 }

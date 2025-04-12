@@ -98,3 +98,18 @@ std::vector<DWORD_PTR> assistTools::scanMemory(const std::vector<DWORD_PTR>& pre
 	} while (false);
 	return vRes;
 }
+BOOL assistTools::writeMemory(const std::vector<DWORD_PTR>& vRes, int val) {
+	BOOL bRet = TRUE;
+	do
+	{
+		if (!m_hProcess) {
+			break;
+		}
+		for (const auto& v : vRes) {
+			if (!WriteProcessMemory(m_hProcess, (LPVOID)v, &val, sizeof(val), NULL)) {
+				bRet = FALSE;
+			}
+		}
+	} while (false);
+	return bRet;
+}

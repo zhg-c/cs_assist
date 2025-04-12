@@ -12,6 +12,7 @@ public:
 	DWORD getPid() { return m_pid; }
 	std::vector<DWORD_PTR> scanMemory(int val);
 	std::vector<DWORD_PTR> scanMemory(const std::vector<DWORD_PTR>& preRes,int val);
+	BOOL writeMemory(const std::vector<DWORD_PTR> &vRes,int val);
 private:
 	DWORD getPid(const std::wstring& processName);
 private:
