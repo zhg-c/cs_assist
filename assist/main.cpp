@@ -7,8 +7,9 @@ using namespace std;
 int main()
 {
     vector<DWORD_PTR> vRes;
-    assistTools atools(TEXT("PlantsVsZombies.exe"));
-
+    //assistTools atools(TEXT("PlantsVsZombies.exe"));
+    assistTools atools(TEXT("zhg_test.exe"));
+#if 0
     int val = 0;
     cout << "input: \n";
     cin >> val;
@@ -34,6 +35,12 @@ int main()
         cout << "input: \n";
         cin >> val;
         atools.writeMemory(vRes, val);
+    }
+#endif
+    auto vPath = atools.getModPaths();
+    cout << "all mod:\n";
+    for (const auto& v : vPath) {
+        wcout << v << endl;
     }
     return 0;
 }

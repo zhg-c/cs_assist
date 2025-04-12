@@ -2,6 +2,10 @@
 
 #include <TlHelp32.h>
 #include <iostream>
+#include <Psapi.h>
+#include <DbgHelp.h>
+#pragma comment(lib, "DbgHelp.lib")
+
 #define MAX_SIZE 4096
 
 assistTools::assistTools(const std::wstring& processName) :
@@ -112,4 +116,24 @@ BOOL assistTools::writeMemory(const std::vector<DWORD_PTR>& vRes, int val) {
 		}
 	} while (false);
 	return bRet;
+}
+std::vector<std::wstring> assistTools::getModPaths() {
+	std::vector<std::wstring> vPath;
+	do
+	{
+		if (!m_hProcess) {
+			break;
+		}
+		HMODULE hMods[1024]{};
+		DWORD cbNeeded = 0;
+		if (EnumProcessModulesEx(m_hProcess, hMods, sizeof(hMods), &cbNeeded, LIST_MODULES_ALL)) {
+			for (size_t i = 0; i < (cbNeeded / sizeof(HMODULE)); i++) {
+				TCHAR modName[MAX_PATH]{};
+				if (GetModuleFileNameEx(m_hProcess, hMods[i], modName, sizeof(modName) / sizeof(TCHAR))) {
+					vPath.push_back(modName);
+				}
+			}
+		}
+	} while (false);
+	return vPath;
 }
