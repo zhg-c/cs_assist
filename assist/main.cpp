@@ -37,12 +37,15 @@ int main()
         atools.writeMemory(vRes, val);
     }
     
-#endif
     atools.injectDll(TEXT("C:\\Users\\Administrator\\Documents\\GitHub\\cs_assist\\Debug\\zhg_dll.dll"));
     auto vPath = atools.getModPaths();
     cout << "all mod:\n";
     for (const auto& v : vPath) {
         wcout << v << endl;
     }
+    atools.getTids();
+#endif
+    atools.installHook(TEXT("C:\\Users\\Administrator\\Documents\\GitHub\\cs_assist\\Debug\\hook.dll"));
+    atools.installHook(TEXT("C:\\Users\\Administrator\\Documents\\GitHub\\cs_assist\\Debug\\hook.dll"),true);
     return 0;
 }
