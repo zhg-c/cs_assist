@@ -36,7 +36,9 @@ int main()
         cin >> val;
         atools.writeMemory(vRes, val);
     }
+    
 #endif
+    atools.injectDll(TEXT("C:\\Users\\Administrator\\Documents\\GitHub\\cs_assist\\Debug\\zhg_dll.dll"));
     auto vPath = atools.getModPaths();
     cout << "all mod:\n";
     for (const auto& v : vPath) {

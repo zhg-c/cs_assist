@@ -137,3 +137,34 @@ std::vector<std::wstring> assistTools::getModPaths() {
 	} while (false);
 	return vPath;
 }
+BOOL assistTools::injectDll(const std::wstring& dllPath) {
+	BOOL bRet = FALSE;
+	LPVOID pRemoteMem = NULL;
+	do
+	{
+		if (!m_hProcess) {
+			break;
+		}
+		pRemoteMem = VirtualAllocEx(m_hProcess, NULL, dllPath.size() + 1, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+		if (!pRemoteMem) {
+			break;
+		}
+		if (!WriteProcessMemory(m_hProcess, pRemoteMem, dllPath.data(), dllPath.size() + 1, NULL)) {
+			break;
+		}
+		LPVOID pLoadLibW = (LPVOID)GetProcAddress(GetModuleHandle(TEXT("Kernel32.dll")), "LoadLibraryW");
+		if (!pLoadLibW) {
+			break;
+		}
+		HANDLE hThread = CreateRemoteThread(m_hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)pLoadLibW, pRemoteMem, 0, NULL);
+		if (!hThread) {
+			break;
+		}
+		WaitForSingleObject(hThread, INFINITE);
+		bRet = TRUE;
+	} while (false);
+	if (pRemoteMem) {
+		VirtualFreeEx(m_hProcess, pRemoteMem, 0, MEM_RELEASE);
+	}
+	return bRet;
+}
